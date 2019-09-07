@@ -18,6 +18,14 @@ const styles = StyleSheet.create({
   nameText: {
     fontSize: 17,
     fontWeight: '600'
+  },
+  dateText: {
+    textTransform: 'uppercase',
+    fontSize: 13,
+    marginTop: 15,
+    color: '#C2C4CF',
+    textAlign: 'center',
+    fontWeight: '600'
   }
 })
 
@@ -59,6 +67,9 @@ class Conversation extends Component {
             />
           </View>
         </View>
+        <ScrollView>
+          <Text style={styles.dateText}>Sept 16th, 12:30</Text>
+        </ScrollView>
       </View>
     )
   }
