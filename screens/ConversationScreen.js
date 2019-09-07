@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
+
+const styles = StyleSheet.create({
+  headerStyle: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 50,
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  searchView: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  nameText: {
+    fontSize: 17,
+    fontWeight: '600'
+  }
+})
 
 class Conversation extends Component {
   static navigationOptions = {
@@ -8,22 +27,35 @@ class Conversation extends Component {
   }
 
   render() {
+    const { navigation: { goBack } } = this.props;
     return (
-      <View>
-        <View>
-          <Ionicons
-            name="ios-arrow-back"
-            size={20}
-          />
-          <Text>Sandy</Text>
-          <View>
+      <View style={{ flex: 1, backgroundColor: '#F6F8FA', }}>
+        <View style={styles.headerStyle}>
+          <TouchableOpacity onPress={() => goBack()}>
+            <Ionicons
+              name="ios-arrow-back"
+              size={20}
+              style={{
+                color: '#ACAEBD'
+              }}
+            />
+          </TouchableOpacity>
+          <Text style={styles.nameText}>Sandy</Text>
+          <View style={styles.searchView}>
             <Ionicons
               name="ios-search"
-              size={25}
+              size={20}
+              style={{
+                marginRight: 10,
+                color: '#ACAEBD'
+              }}
             />
             <Entypo
               name="dots-three-horizontal"
               size={20}
+              style={{
+                color: '#ACAEBD'
+              }}
             />
           </View>
         </View>
