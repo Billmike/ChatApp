@@ -12,6 +12,15 @@ const config = Platform.select({
   web: { headerMode: 'screen' },
 });
 
+const ChatStack = createStackNavigator({
+  Conversation: ConversationScreen
+}, {
+  navigationOptions: {
+    tabBarButtonComponent: () => null,
+    tabBarVisible: false
+  },
+});
+
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
@@ -70,6 +79,7 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  ChatStack
 });
 
 tabNavigator.path = '';

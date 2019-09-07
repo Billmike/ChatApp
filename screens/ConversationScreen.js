@@ -79,15 +79,16 @@ const styles = StyleSheet.create({
 
 class Conversation extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    tabBarVisible: false
   }
 
   render() {
-    const { navigation: { navigate } } = this.props;
+    const { navigation: { goBack } } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: '#F6F8FA', }}>
         <View style={styles.headerStyle}>
-          <TouchableOpacity onPress={() => navigate('Home')}>
+          <TouchableOpacity onPress={() => goBack(null)}>
             <Ionicons
               name="ios-arrow-back"
               size={20}
