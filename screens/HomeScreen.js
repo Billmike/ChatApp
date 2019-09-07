@@ -12,7 +12,7 @@ import {
   FlatList,
   StatusBar
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
 const CHAT_DATA = [
@@ -151,6 +151,13 @@ export default function HomeScreen() {
             <Text tabLabel='Communities'>Coming Sooooooon.</Text>
           </ScrollableTabView>
       </ScrollView>
+      <TouchableOpacity style={styles.fabView}>
+        <AntDesign
+          name="plus"
+          size={25}
+          style={styles.plusStyle}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -234,5 +241,28 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     marginLeft: 10
+  },
+  fabView: {
+    backgroundColor: '#636AF7',
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    marginRight: 30,
+    marginBottom: 25,
+    display: 'flex',
+    shadowColor: '#DDDEFF',
+    shadowOpacity: 1,
+    shadowOffset: {
+      width: 1,
+      height: 2
+    }
+  },
+  plusStyle: {
+    marginTop: 12,
+    alignSelf: 'center',
+    color: '#FFF'
   }
 });
