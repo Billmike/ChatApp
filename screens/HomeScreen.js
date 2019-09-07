@@ -7,64 +7,150 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TextInput,
   View,
+  FlatList,
+  StatusBar
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
-import { MonoText } from '../components/StyledText';
+const CHAT_DATA = [
+  {
+    id: '1',
+    username: 'Channel',
+    message: 'Username: An existing app',
+    time: '14:52',
+    unread: 3,
+    profileImage: require('../assets/images/profile1.jpeg'),
+    online: true
+  },
+  {
+    id: '2',
+    username: 'Priscilla',
+    message: 'Username: An existing app',
+    time: '14:52',
+    profileImage: require('../assets/images/profile2.jpeg'),
+    online: false
+  },
+  {
+    id: '3',
+    username: 'Michael',
+    message: 'Username: An existing app',
+    time: '14:52',
+    profileImage: require('../assets/images/profile3.jpeg'),
+    online: false
+  },
+  {
+    id: '4',
+    username: 'Samuel',
+    message: 'Username: An existing app',
+    time: '14:52',
+    unread: 2,
+    profileImage: require('../assets/images/profile4.jpeg'),
+    online: true
+  },
+  {
+    id: '5',
+    username: 'Channel',
+    message: 'Username: An existing app',
+    time: '14:52',
+    profileImage: require('../assets/images/profile5.jpeg'),
+    online: false
+  }
+]
+
+const renderChats = ({
+  id,
+  username,
+  message,
+  time,
+  unread,
+  profileImage,
+  online
+}) => (
+    <TouchableOpacity
+      key={id}
+      style={styles.chatWrapper}
+    >
+      <View>
+        <Image
+          source={profileImage}
+          style={{
+            marginRight: 15,
+            width: 50,
+            height: 50,
+            borderRadius: 25
+          }}
+        />
+        {online && <View style={styles.onlineNotif} />}
+      </View>
+      <View>
+        <Text style={styles.nameTextStyle}>{username}</Text>
+        <Text style={styles.message}>{message}</Text>
+      </View>
+      <View style={styles.displayTimeWrapper}>
+        <Text style={{ color: '#9FA1AA' }}>{time}</Text>
+        {unread && <View style={styles.newMessagesCount}>
+          <Text style={{ textAlign: 'center', color: '#FFF' }}>{unread}</Text>
+        </View>}
+      </View>
+    </TouchableOpacity>
+)
+
+const renderFlatList = (label) => (
+  <FlatList
+    data={CHAT_DATA}
+    tabLabel={label}
+    renderItem={({ item, index }) => (
+      renderChats(item)
+    )}
+    keyExtractor={(i, x) => x.toString()}
+  />
+)
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#F6F8FA" />
+      <View style={styles.searchWrapper}>
+          <Image
+            source={require('../assets/images/profile2.jpeg')}
+            style={[styles.profileImage, { borderRadius: 20 }]}
+          />
+        <View style={styles.searchSectionWrapper}>
+          <Ionicons
+            name="ios-search"
+            size={20}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            placeholder="Search Chat"
+            style={styles.searchInputStyle}
+          />
+        </View>
+      </View>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
-        </View>
-
-        <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
-
-          <Text style={styles.getStartedText}>Get started by opening</Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>screens/HomeScreen.js</MonoText>
-          </View>
-
-          <Text style={styles.getStartedText}>
-            Change this text and your app will automatically reload.
-          </Text>
-        </View>
-
-        <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
-          </TouchableOpacity>
-        </View>
+          <ScrollableTabView
+            initialPage={0}
+            tabBarInactiveTextColor="#C7C8CC"
+            tabBarActiveTextColor="#122140"
+            tabBarUnderlineStyle={{
+              height: 3,
+              width: '20%',
+              marginLeft: 25,
+              borderWidth: 1,
+              borderColor: '#636AF7',
+              backgroundColor: '#636AF7'
+            }}
+          >
+            <Text tabLabel='Friends'>Coming Sooooooon.</Text>
+            {renderFlatList("Chats")}
+            <Text tabLabel='Communities'>Coming Sooooooon.</Text>
+          </ScrollableTabView>
       </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-          <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText>
-        </View>
-      </View>
     </View>
   );
 }
@@ -73,126 +159,80 @@ HomeScreen.navigationOptions = {
   header: null,
 };
 
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    );
-
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use
-        useful development tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
-    );
-  }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  searchWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 100,
+    justifyContent: 'center',
+    width: '100%',
+    backgroundColor: '#F6F8FA',
+    paddingTop: 15,
+    paddingBottom: 25
+  },
+  searchInputStyle: {
+    backgroundColor: 'white',
+    width: '60%',
+    marginLeft: 15,
+    borderRadius: 10,
+  },
+  searchSectionWrapper: {
+    marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
+    borderRadius: 10,
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+  searchIcon: {
+    padding: 10,
+    color: '#CFD0D9',
   },
-  contentContainer: {
-    paddingTop: 30,
+  profileImage: {
+    width: 40,
+    height: 40
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+  chatWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 20,
+    marginRight: 30,
+    marginLeft: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F9',
+    paddingBottom: 25
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
+  displayTimeWrapper: {
+    marginLeft: 'auto',
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
+  onlineNotif: {
+    height: 15,
+    width: 15,
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'white',
+    backgroundColor: '#10CF64',
+    left: 40
   },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
+  nameTextStyle: {
+    color: '#021538',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 10
   },
-  navigationFilename: {
-    marginTop: 5,
+  message: {
+    color: '#9FA1AA',
+    fontSize: 14
   },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  newMessagesCount: {
+    backgroundColor: '#636AF7',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginTop: 10,
+    marginLeft: 10
+  }
 });
