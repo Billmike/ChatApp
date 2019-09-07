@@ -68,10 +68,11 @@ const renderChats = ({
   unread,
   profileImage,
   online
-}) => (
+}, navigate) => (
     <TouchableOpacity
       key={id}
       style={styles.chatWrapper}
+      onPress={() => navigate('Conversation')}
     >
       <View>
         <Image
@@ -98,18 +99,18 @@ const renderChats = ({
     </TouchableOpacity>
 )
 
-const renderFlatList = (label) => (
+const renderFlatList = (label, navigate) => (
   <FlatList
     data={CHAT_DATA}
     tabLabel={label}
     renderItem={({ item, index }) => (
-      renderChats(item)
+      renderChats(item, navigate)
     )}
     keyExtractor={(i, x) => x.toString()}
   />
 )
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#F6F8FA" />
@@ -147,7 +148,7 @@ export default function HomeScreen() {
             }}
           >
             <Text tabLabel='Friends'>Coming Sooooooon.</Text>
-            {renderFlatList("Chats")}
+            {renderFlatList("Chats", navigate)}
             <Text tabLabel='Communities'>Coming Sooooooon.</Text>
           </ScrollableTabView>
       </ScrollView>

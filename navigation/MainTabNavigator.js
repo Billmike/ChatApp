@@ -6,17 +6,17 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ConversationScreen from '../screens/ConversationScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
-  default: {},
 });
 
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
+    Conversation: ConversationScreen
   },
-  config
 );
 
 HomeStack.navigationOptions = {
