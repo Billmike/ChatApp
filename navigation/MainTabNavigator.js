@@ -15,14 +15,22 @@ const config = Platform.select({
 
 const ChatStack = createStackNavigator({
   Conversation: ConversationScreen,
+}, {
+  navigationOptions: {
+    tabBarButtonComponent: () => null,
+    tabBarVisible: false,
+  },
+});
+
+const SearchContactsStack = createStackNavigator({
   SearchContacts: SearchContactsScreen
 }, {
   navigationOptions: {
     tabBarButtonComponent: () => null,
     tabBarVisible: false,
     header: null
-  },
-});
+  }
+})
 
 const HomeStack = createStackNavigator(
   {
@@ -82,7 +90,8 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
-  ChatStack
+  ChatStack,
+  SearchContactsStack
 });
 
 tabNavigator.path = '';
