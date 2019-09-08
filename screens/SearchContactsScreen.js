@@ -5,15 +5,26 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
-  StyleSheet
+  StyleSheet,
+  TextInput
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   headerStyle: {
     paddingTop: 50,
     paddingRight: 15,
-    paddingLeft: 15
+    paddingLeft: 15,
+    borderBottomColor: 'white',
+    borderBottomWidth: 1,
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowColor: '#A9A9A9',
+    shadowOpacity: 1.0,
+    paddingBottom: 15,
+    backgroundColor: '#FFF',
   },
   newConversationView: {
     display: 'flex',
@@ -25,6 +36,20 @@ const styles = StyleSheet.create({
     color: '#C2C4CF',
     marginTop: 2,
     fontWeight: '600'
+  },
+  searchFieldView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 15
+  },
+  to: {
+    marginTop: 4,
+    fontSize: 14
+  },
+  inputStyle: {
+    paddingLeft: 15,
+    width: '92%'
   }
 })
 
@@ -44,8 +69,19 @@ const SearchContacts = ({ navigation }) => {
           </TouchableOpacity>
           <Text style={styles.newConversationText}>New conversation</Text>
         </View>
-        <View>
-          <Text>To</Text>
+        <View style={styles.searchFieldView}>
+          <Text style={styles.to}>To</Text>
+          <TextInput
+            placeholder="Type a name, phone number or email address"
+            style={styles.inputStyle}
+            placeholderTextColor="#696969"
+          />
+          <TouchableOpacity>
+            <MaterialIcons
+              name="dialpad"
+              size={25}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
