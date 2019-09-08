@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
   },
   phoneNumberType: {
     marginLeft: 'auto',
-    color: '#696969'
+    color: '#696969',
+    textTransform: 'capitalize'
   },
   initialsView: {
     height: 40,
@@ -87,10 +88,10 @@ const styles = StyleSheet.create({
 
 const SearchContacts = ({ navigation }) => {
   const [keyboardTypeState, setKeyboardTypeState] = useState({ keyboardType: 'email-address' });
-  const [{ contacts }, setContactsState] = useState({ contacts: [] })
+  const [contactsState, setContactsState] = useState({ contacts: [], searchValue: '' })
 
   useEffect(() => {
-    getContacts()
+    getContacts();
   }, [])
 
   const getContacts = async () => {
@@ -107,6 +108,20 @@ const SearchContacts = ({ navigation }) => {
     keyboardType === 'email-address' ?
       setKeyboardTypeState({ keyboardType: 'numeric' }) :
       setKeyboardTypeState({ keyboardType: 'email-address' })
+  }
+
+  const searchContactsByName = (nativeTextEvent) => {
+    const { nativeEvent: { text } } = nativeTextEvent;
+    const { contacts } = contactsState;
+
+      if (text.trim() === '') {
+        getContacts()
+      } else {
+        const foundContacts = contacts.filter(contact => contact.firstName.toLowerCase().includes(text.toLowerCase()));
+        foundContacts.length === 0 ?
+        getContacts() :
+        setContactsState({ ...contactsState, contacts: foundContacts });
+      }
   }
 
   return (
@@ -131,6 +146,9 @@ const SearchContacts = ({ navigation }) => {
             style={styles.inputStyle}
             placeholderTextColor="#696969"
             keyboardType={keyboardTypeState.keyboardType}
+            value={contactsState.searchValue}
+            onChange={(text) => searchContactsByName(text)}
+            // onChangeText={(text) => setContactsState({ ...contactsState, searchValue: text })}
           />
           <TouchableOpacity onPress={() => toggleKeyboardType()}>
             <MaterialIcons
@@ -145,7 +163,7 @@ const SearchContacts = ({ navigation }) => {
       </View>
       <ScrollView>
         {
-          contacts.map(contact => (
+          contactsState.contacts.map(contact => (
             <TouchableOpacity style={styles.contactView} key={contact.id}>
               <View style={styles.initialsView}>
                 <Text style={styles.initialsText}>{contact.firstName[0]}</Text>
