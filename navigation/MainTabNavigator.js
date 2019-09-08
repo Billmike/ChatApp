@@ -6,28 +6,47 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ConversationScreen from '../screens/ConversationScreen';
+import SearchContactsScreen from '../screens/SearchContactsScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
-  default: {},
 });
+
+const ChatStack = createStackNavigator({
+  Conversation: ConversationScreen,
+}, {
+  navigationOptions: {
+    tabBarButtonComponent: () => null,
+    tabBarVisible: false,
+  },
+});
+
+const SearchContactsStack = createStackNavigator({
+  SearchContacts: SearchContactsScreen
+}, {
+  navigationOptions: {
+    tabBarButtonComponent: () => null,
+    tabBarVisible: false,
+    header: null
+  }
+})
 
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
   },
-  config
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Chats',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? 'ios-chatboxes'
+          : 'md-chatboxes'
       }
     />
   ),
@@ -71,6 +90,8 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  ChatStack,
+  SearchContactsStack
 });
 
 tabNavigator.path = '';

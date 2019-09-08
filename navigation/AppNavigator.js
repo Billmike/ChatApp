@@ -1,5 +1,6 @@
 import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import ConversationScreen from '../screens/ConversationScreen';
 
 import MainTabNavigator from './MainTabNavigator';
 
