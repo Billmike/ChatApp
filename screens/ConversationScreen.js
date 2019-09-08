@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
   sendIcon: {
     color: '#646BF9',
     alignSelf: 'center',
-    marginTop: 7
+    marginTop: 7,
+    marginLeft: 1
   }
 })
 
