@@ -54,6 +54,15 @@ const styles = StyleSheet.create({
 })
 
 const SearchContacts = ({ navigation }) => {
+  const [keyboardTypeState, setKeyboardTypeState] = useState({ keyboardType: 'email-address' });
+
+  const toggleKeyboardType = () => {
+    const { keyboardType } = keyboardTypeState;
+    keyboardType === 'email-address' ?
+      setKeyboardTypeState({ keyboardType: 'numeric' }) :
+      setKeyboardTypeState({ keyboardType: 'email-address' })
+  }
+
   return (
     <View>
       <View style={styles.headerStyle}>
@@ -75,10 +84,14 @@ const SearchContacts = ({ navigation }) => {
             placeholder="Type a name, phone number or email address"
             style={styles.inputStyle}
             placeholderTextColor="#696969"
+            keyboardType={keyboardTypeState.keyboardType}
           />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => toggleKeyboardType()}>
             <MaterialIcons
-              name="dialpad"
+              name={keyboardTypeState.keyboardType === 'email-address' ?
+              'dialpad' :
+              'keyboard'
+              }
               size={25}
             />
           </TouchableOpacity>
