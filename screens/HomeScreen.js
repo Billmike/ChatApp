@@ -168,7 +168,7 @@ export default function HomeScreen({ navigation: { navigate } }) {
             <Text tabLabel='Communities'>Coming Sooooooon.</Text>
           </ScrollableTabView>
       </ScrollView>
-      <TouchableOpacity style={styles.fabView} onPress={() => getContacts()}>
+      <TouchableOpacity style={styles.fabView} onPress={() => navigate('SearchContacts')}>
         <AntDesign
           name="plus"
           size={25}

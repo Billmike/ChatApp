@@ -7,17 +7,20 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ConversationScreen from '../screens/ConversationScreen';
+import SearchContactsScreen from '../screens/SearchContactsScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
 });
 
 const ChatStack = createStackNavigator({
-  Conversation: ConversationScreen
+  Conversation: ConversationScreen,
+  SearchContacts: SearchContactsScreen
 }, {
   navigationOptions: {
     tabBarButtonComponent: () => null,
-    tabBarVisible: false
+    tabBarVisible: false,
+    header: null
   },
 });
 
