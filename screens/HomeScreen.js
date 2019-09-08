@@ -10,8 +10,11 @@ import {
   TextInput,
   View,
   FlatList,
-  StatusBar
+  StatusBar,
+  Alert
 } from 'react-native';
+import * as Contacts from 'expo-contacts';
+import * as Permissions from 'expo-permissions';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
@@ -110,6 +113,19 @@ const renderFlatList = (label, navigate) => (
   />
 )
 
+const getContacts = async () => {
+  const time = Date.now();
+  console.log('permissions!?')
+  const permission = await Permissions.askAsync(Permissions.CONTACTS);
+  if (permission !== 'granted') { return }
+  const contacts = await Contacts.getContactsAsync({
+    fields: [
+      Contacts.PHONE_NUMBERS
+    ]
+  });
+  console.log('contacts', contacts);
+}
+
 export default function HomeScreen({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
@@ -152,7 +168,7 @@ export default function HomeScreen({ navigation: { navigate } }) {
             <Text tabLabel='Communities'>Coming Sooooooon.</Text>
           </ScrollableTabView>
       </ScrollView>
-      <TouchableOpacity style={styles.fabView}>
+      <TouchableOpacity style={styles.fabView} onPress={() => getContacts()}>
         <AntDesign
           name="plus"
           size={25}

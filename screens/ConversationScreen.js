@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, Alert } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
