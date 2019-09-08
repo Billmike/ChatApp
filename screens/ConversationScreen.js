@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, Alert } from 'react-native';
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Image,
+  TextInput,
+  Platform,
+  KeyboardAvoidingView
+} from 'react-native';
+import { Ionicons, Entypo, SimpleLineIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   headerStyle: {
@@ -74,6 +84,41 @@ const styles = StyleSheet.create({
       height: 5
     },
     shadowOpacity: 0.7
+  },
+  messageInputView: {
+    // position: 'absolute',
+    // bottom: 0,
+    paddingLeft: 25,
+    backgroundColor: '#FFF',
+    paddingTop: 20,
+    paddingBottom: 20
+  },
+  messageIcons: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  textInputStyle: {
+    marginBottom: 15,
+    width: '100%'
+  },
+  iconStyle: {
+    marginLeft: 25,
+    color: '#C2C4CF'
+  },
+  sendIconView: {
+    position: 'absolute',
+    bottom: 36,
+    right: 0,
+    marginRight: 20,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F1F3FD'
+  },
+  sendIcon: {
+    color: '#646BF9',
+    alignSelf: 'center',
+    marginTop: 7
   }
 })
 
@@ -116,28 +161,82 @@ class Conversation extends Component {
             />
           </View>
         </View>
-        <ScrollView>
-          <Text style={styles.dateText}>Sept 16th, 12:30</Text>
-          <View style={styles.chatWrapper}>
-            <Image
-              source={require('../assets/images/profile4.jpeg')}
-              style={{
-                height: 30,
-                width: 30,
-                borderRadius: 15,
-                marginTop: 25
-              }}
-            />
-            <View>
-              <View style={styles.chatTextStyle}>
-                <Text style={{ flex: 1, flexWrap: 'wrap' }}>
-                  Kudos to Ivan for writing it from scratch. Thanks
-                </Text>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+          <ScrollView>
+            <Text style={styles.dateText}>Sept 16th, 12:30</Text>
+            <View style={styles.chatWrapper}>
+              <Image
+                source={require('../assets/images/profile4.jpeg')}
+                style={{
+                  height: 30,
+                  width: 30,
+                  borderRadius: 15,
+                  marginTop: 25
+                }}
+              />
+              <View>
+                <View style={styles.chatTextStyle}>
+                  <Text style={{ flex: 1, flexWrap: 'wrap' }}>
+                    Kudos to Ivan for writing it from scratch. Thanks
+                  </Text>
+                </View>
+                <View style={styles.bubble} />
               </View>
-              <View style={styles.bubble} />
             </View>
+          </ScrollView>
+          <View style={styles.messageInputView}>
+            <TextInput
+              placeholder="Message.."
+              style={styles.textInputStyle}
+            />
+            <View style={styles.messageIcons}>
+              <TouchableOpacity>
+                <Ionicons
+                  name={Platform.OS === 'ios' ?
+                  'ios-image' :
+                  'md-image'
+                  }
+                  size={20}
+                  style={[styles.iconStyle, { marginLeft: 0 }]}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons
+                  name={Platform.OS === 'ios' ?
+                  'ios-gift' :
+                  'md-gift'
+                  }
+                  size={20}
+                  style={styles.iconStyle}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons
+                  name={Platform.OS === 'ios' ?
+                  'ios-camera' :
+                  'md-camera'
+                  }
+                  size={23}
+                  style={styles.iconStyle}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <SimpleLineIcons
+                  name="emotsmile"
+                  size={20}
+                  style={styles.iconStyle}
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.sendIconView}>
+              <Ionicons
+                name="md-send"
+                size={26}
+                style={styles.sendIcon}
+              />
+            </TouchableOpacity>
           </View>
-        </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     )
   }
