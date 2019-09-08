@@ -8,6 +8,8 @@ import {
   StyleSheet,
   TextInput
 } from 'react-native';
+import * as Contacts from 'expo-contacts';
+import * as Permissions from 'expo-permissions';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
@@ -50,11 +52,55 @@ const styles = StyleSheet.create({
   inputStyle: {
     paddingLeft: 15,
     width: '92%'
+  },
+  contactView: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginTop: 20
+  },
+  phoneNumberType: {
+    marginLeft: 'auto',
+    color: '#696969'
+  },
+  initialsView: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: 'purple',
+    marginRight: 20
+  },
+  initialsText: {
+    alignSelf: 'center',
+    fontSize: 20,
+    marginTop: 5,
+    color: '#FFF'
+  },
+  nameStyle: {
+    fontSize: 15
+  },
+  phoneNumberStyle: {
+    color: '#696969'
   }
 })
 
 const SearchContacts = ({ navigation }) => {
   const [keyboardTypeState, setKeyboardTypeState] = useState({ keyboardType: 'email-address' });
+  const [{ contacts }, setContactsState] = useState({ contacts: [] })
+
+  useEffect(() => {
+    getContacts()
+  }, [])
+
+  const getContacts = async () => {
+    const { data } = await Contacts.getContactsAsync({
+      fields: [
+        Contacts.PHONE_NUMBERS
+      ]
+    });
+    setContactsState({ contacts: data })
+  }
 
   const toggleKeyboardType = () => {
     const { keyboardType } = keyboardTypeState;
@@ -97,6 +143,28 @@ const SearchContacts = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <ScrollView>
+        {
+          contacts.map(contact => (
+            <TouchableOpacity style={styles.contactView} key={contact.id}>
+              <View style={styles.initialsView}>
+                <Text style={styles.initialsText}>{contact.firstName[0]}</Text>
+              </View>
+              <View>
+                <Text style={styles.nameStyle}>{contact.firstName}</Text>
+                <Text style={styles.phoneNumberStyle}>{contact.phoneNumbers[0].number}</Text>
+              </View>
+              <Text style={styles.phoneNumberType}>
+                {
+                  contact.phoneNumbers.length > 1 ?
+                  'Multiple' :
+                  contact.phoneNumbers[0].label
+                }
+              </Text>
+            </TouchableOpacity>
+          ))
+        }
+      </ScrollView>
     </View>
   )
 }

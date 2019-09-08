@@ -11,7 +11,6 @@ import {
   View,
   FlatList,
   StatusBar,
-  Alert
 } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
