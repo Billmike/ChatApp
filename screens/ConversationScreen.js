@@ -229,7 +229,9 @@ class Conversation extends Component {
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.sendIconView}>
+            <TouchableOpacity
+              style={styles.sendIconView}
+            >
               <Ionicons
                 name="md-send"
                 size={26}

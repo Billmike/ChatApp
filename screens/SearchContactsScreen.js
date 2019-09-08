@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Platform,
   StyleSheet,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   initialsText: {
     alignSelf: 'center',
     fontSize: 20,
-    marginTop: 5,
+    marginTop: 8,
     color: '#FFF'
   },
   nameStyle: {
@@ -124,6 +125,8 @@ const SearchContacts = ({ navigation }) => {
       }
   }
 
+  const { height } = Dimensions.get('screen');
+  console.log('height', height)
   return (
     <View>
       <View style={styles.headerStyle}>
@@ -148,7 +151,6 @@ const SearchContacts = ({ navigation }) => {
             keyboardType={keyboardTypeState.keyboardType}
             value={contactsState.searchValue}
             onChange={(text) => searchContactsByName(text)}
-            // onChangeText={(text) => setContactsState({ ...contactsState, searchValue: text })}
           />
           <TouchableOpacity onPress={() => toggleKeyboardType()}>
             <MaterialIcons
@@ -161,10 +163,14 @@ const SearchContacts = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView style={{ marginBottom: 134 }}>
         {
           contactsState.contacts.map(contact => (
-            <TouchableOpacity style={styles.contactView} key={contact.id}>
+            <TouchableOpacity
+              style={styles.contactView}
+              key={contact.id}
+              onPress={() => navigation.navigate('Conversation')}
+            >
               <View style={styles.initialsView}>
                 <Text style={styles.initialsText}>{contact.firstName[0]}</Text>
               </View>
