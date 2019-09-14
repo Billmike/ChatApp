@@ -1,47 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
+import { connect } from 'react-redux';
 import {
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 
-export default function LinksScreen() {
-  const [userDetailState, updateUserDetail] = useState({ username: '', phoneNumber: '' });
+// actions
+import { signupRequest, signupSuccessAction } from '../redux/reducers/user';
 
-  const handleSignUp = () => {
-    const { username, phoneNumber } = userDetailState;
+class SignupScreen extends Component {
+  static navigationOptions = {
+    header: null
   }
 
-  return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.joinText}>Join us</Text>
-      <TextInput
-        placeholder="Username"
-        keyboardType="default"
-        style={styles.inputStyle}
-        placeholderTextColor="#C7C7C7"
-        onChangeText={(text) => updateUserDetail({ ...userDetailState, username: text })}
-      />
-      <TextInput
-        placeholder="Phone Number"
-        keyboardType="phone-pad"
-        style={styles.inputStyle}
-        placeholderTextColor="#C7C7C7"
-        onChangeText={(text) => updateUserDetail({ ...userDetailState, phoneNumber: text })}
-      />
-      <TouchableOpacity style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>Join</Text>
-      </TouchableOpacity>
-    </ScrollView>
-  );
-}
+  state = {
+    username: '',
+    phoneNumber: ''
+  }
 
-LinksScreen.navigationOptions = {
-  header: null
-};
+  onSignup = () => {
+    const { username, phoneNumber } = this.state;
+    const userData = { username, phoneNumber }
+    const { success } = this.props.signupSuccessAction(userData);
+    if (success) {
+      this.props.navigation.navigate('Home')
+    }
+  }
+
+  render() {
+    const { isLoading } = this.props;
+    return (
+      <ScrollView style={styles.container}>
+        <Text style={styles.joinText}>Join us</Text>
+        <TextInput
+          placeholder="Username"
+          keyboardType="default"
+          style={styles.inputStyle}
+          placeholderTextColor="#C7C7C7"
+          onChangeText={(text) => this.setState({ username: text })}
+        />
+        <TextInput
+          placeholder="Phone Number"
+          keyboardType="phone-pad"
+          style={styles.inputStyle}
+          placeholderTextColor="#C7C7C7"
+          onChangeText={(text) => this.setState({ phoneNumber: text })}
+        />
+        <TouchableOpacity style={styles.buttonStyle} onPress={this.onSignup}>
+          <Text style={styles.buttonTextStyle}>Join</Text>
+        </TouchableOpacity>
+        {isLoading && <ActivityIndicator
+          size="large"
+        />}
+      </ScrollView>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -75,3 +94,9 @@ const styles = StyleSheet.create({
     fontSize: 17
   }
 });
+
+const mapStateToProps = ({ user }) => ({
+  isLoading: user.isLoading
+})
+
+export default connect(mapStateToProps, { signupSuccessAction })(SignupScreen)
