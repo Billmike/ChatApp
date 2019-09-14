@@ -1,7 +1,20 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  AsyncStorage
+} from 'react-native';
 
 export default function LinksScreen() {
+  const [userDetailState, updateUserDetail] = useState({ username: '', phoneNumber: '' });
+
+  const handleSignUp = () => {
+    const { username, phoneNumber } = userDetailState;
+  }
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.joinText}>Join us</Text>
@@ -10,12 +23,14 @@ export default function LinksScreen() {
         keyboardType="default"
         style={styles.inputStyle}
         placeholderTextColor="#C7C7C7"
+        onChangeText={(text) => updateUserDetail({ ...userDetailState, username: text })}
       />
       <TextInput
         placeholder="Phone Number"
         keyboardType="phone-pad"
         style={styles.inputStyle}
         placeholderTextColor="#C7C7C7"
+        onChangeText={(text) => updateUserDetail({ ...userDetailState, phoneNumber: text })}
       />
       <TouchableOpacity style={styles.buttonStyle}>
         <Text style={styles.buttonTextStyle}>Join</Text>
