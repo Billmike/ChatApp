@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   Platform,
@@ -11,6 +11,7 @@ import {
   View,
   FlatList,
   StatusBar,
+  AsyncStorage
 } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
@@ -112,20 +113,15 @@ const renderFlatList = (label, navigate) => (
   />
 )
 
-const getContacts = async () => {
-  const time = Date.now();
-  console.log('permissions!?')
-  const permission = await Permissions.askAsync(Permissions.CONTACTS);
-  if (permission !== 'granted') { return }
-  const contacts = await Contacts.getContactsAsync({
-    fields: [
-      Contacts.PHONE_NUMBERS
-    ]
-  });
-  console.log('contacts', contacts);
-}
-
 export default function HomeScreen({ navigation: { navigate } }) {
+  useEffect(() => {
+    fetchUserDetails()
+  }, [])
+
+  const fetchUserDetails = async () => {
+    const data = await AsyncStorage.getItem('userData');
+    console.log('data', data)
+  }
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#F6F8FA" />
